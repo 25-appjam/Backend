@@ -11,7 +11,7 @@ class User(
         familyName: String
 ) {
     @Column(name = "user_id")
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     val id: UUID = UUID.randomUUID()
 
     var name: String = name
