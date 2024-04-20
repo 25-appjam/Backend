@@ -1,15 +1,16 @@
 package com.anys34.appjam.global.config
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.anys34.appjam.global.security.jwt.JwtTokenFilter
 import com.anys34.appjam.global.security.jwt.JwtTokenProvider
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.HttpStatusEntryPoint
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
@@ -20,7 +21,10 @@ class SecurityConfig(
         private val objectMapper: ObjectMapper,
         private val jwtProvider: JwtTokenProvider
 ) {
-    private val ADMIN: String = "ADMIN"
+    @Bean
+    fun encoder(): PasswordEncoder {
+        return BCryptPasswordEncoder()
+    }
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
@@ -38,8 +42,6 @@ class SecurityConfig(
 
         http
             .authorizeRequests()
-            .requestMatchers(HttpMethod.GET, "/post/**").permitAll()
-            .requestMatchers("/post/**").hasRole(ADMIN)
             .anyRequest().permitAll()
 
         http.exceptionHandling().authenticationEntryPoint(

@@ -3,33 +3,33 @@ package com.anys34.appjam.domain.user.service
 import com.anys34.appjam.domain.auth.presentation.dto.res.TokenResponse
 import com.anys34.appjam.domain.user.domain.User
 import com.anys34.appjam.domain.user.domain.repository.UserRepository
-import com.anys34.appjam.domain.user.exception.SchoolUserNotException
+import com.anys34.appjam.domain.user.exception.UserIncorrectException
+import com.anys34.appjam.domain.user.exception.UserNotFoundException
+import com.anys34.appjam.domain.user.presentation.dto.req.LoginRequest
 import com.anys34.appjam.global.feign.auth.GoogleInformationClient
 import com.anys34.appjam.global.feign.auth.dto.res.GoogleInformationResponse
 import com.anys34.appjam.global.security.jwt.JwtTokenProvider
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class GoogleAuthService(
+class AuthService(
         private val userRepository: UserRepository,
         private val jwtTokenProvider: JwtTokenProvider,
-        private val googleInformationClient: GoogleInformationClient
+        private val passwordEncoder: PasswordEncoder
 ) {
     @Transactional
-    fun execute(accessToken: String): TokenResponse {
-        val response: GoogleInformationResponse = googleInformationClient
-                .getInformation(accessToken)
-        val email: String = response.email
+    fun execute(loginRequest: LoginRequest): TokenResponse {
+        val user = userRepository.findByEmail(loginRequest.email)
+                ?: throw UserNotFoundException
 
-        userRepository.findByEmail(email)
-                ?: userRepository.save(User(
-                        email,
-                        response.name
-                ))
+        if (!passwordEncoder.matches(loginRequest.password, user.password)) {
+            throw UserIncorrectException
+        }
 
         return TokenResponse(
-                jwtTokenProvider.createAccessToken(email)
+                jwtTokenProvider.createAccessToken(loginRequest.email)
         )
     }
 }

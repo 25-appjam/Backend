@@ -6,4 +6,5 @@ import org.springframework.data.repository.CrudRepository
 
 interface UserRepository: JpaRepository<User, Long> {
     fun findByEmail(email: String): User?
+    fun findByEmailAndPassword(email: String, password: String): User?
 }

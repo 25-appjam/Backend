@@ -5,7 +5,8 @@ import jakarta.persistence.*
 @Entity
 class User(
         email: String,
-        nickname: String
+        password: String,
+        familyName: String
 ) {
     @Column(name = "user_id")
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +15,9 @@ class User(
     var email: String = email
         protected set
 
-    var nickname: String = nickname
+    var password: String = password
+        protected set
+
+    var familyName: String = familyName
         protected set
 }

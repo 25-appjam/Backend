@@ -7,9 +7,9 @@ enum class ErrorCode(
         val message: String
 ) {
     USER_NOT_MATCH(400, "User Not Match"),
-    SCHOOL_USER_NOT(400, "School User Not"),
+    USER_SAME(400, "User Same"),
+    USER_INCORRECT(400, "User Incorrect"),
     EXPIRED_JWT(401, "Expired Jwt"),
     INVALID_JWT(401, "Invalid Jwt"),
     USER_NOT_FOUND(404, "User Not Found"),
-    POST_NOT_FOUND(404, "Post Not Found"),
 }
