@@ -24,6 +24,7 @@ class SigninService(
             throw UserSameException
 
         userRepository.save(User(
+                signinRequest.name,
                 signinRequest.email,
                 passwordEncoder.encode(signinRequest.password),
                 signinRequest.familyName

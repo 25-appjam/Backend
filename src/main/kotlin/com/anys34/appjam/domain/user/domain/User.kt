@@ -1,16 +1,21 @@
 package com.anys34.appjam.domain.user.domain
 
 import jakarta.persistence.*
+import java.util.UUID
 
 @Entity
 class User(
+        name: String,
         email: String,
         password: String,
         familyName: String
 ) {
     @Column(name = "user_id")
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0L
+    val id: UUID = UUID.randomUUID()
+
+    var name: String = name
+        protected set
 
     var email: String = email
         protected set
