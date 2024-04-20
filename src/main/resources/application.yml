@@ -1,0 +1,47 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${APPJAM_DB_NAME}?${DB_PROPERTIES}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: ${DDL_AUTO}
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+
+jwt:
+  access-time: 2592000000
+  prefix: Bearer
+  header: Authorization
+  secret-key: ${JWT_SECRET}
+
+auth:
+  google:
+    base-url: ${GOOGLE_BASE_URL}
+    client-id: ${GOOGLE_CLIENT}
+    redirect-url: ${GOOGLE_REDIRECT}
+
+cloud:
+  aws:
+    s3:
+      bucket: ${AWS_BUKET}
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
+      instance-profile: true
+    region:
+      static: ${AWS_REGION}
+    stack:
+      auto: false
+
+logging:
+  level:
+    com.amazonaws.util.EC2MetadataUtils: error
