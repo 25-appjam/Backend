@@ -1,7 +1,5 @@
 package com.anys34.appjam.global.config.error.exception
 
-import org.springframework.http.HttpStatus
-
 enum class ErrorCode(
         val status: Int,
         val message: String
